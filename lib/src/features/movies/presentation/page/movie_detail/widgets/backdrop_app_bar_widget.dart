@@ -22,12 +22,18 @@ class BackdropAppBarWidget extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (detail.backdropPath.isNotEmpty)
-              CachedNetworkImage(
-                imageUrl: '$kTmdbImageBaseUrl${detail.backdropPath}',
-                fit: BoxFit.cover,
+              Hero(
+                tag: 'movie_poster_${detail.id}',
+                child: CachedNetworkImage(
+                  imageUrl: '$kTmdbImageBaseUrl${detail.backdropPath}',
+                  fit: BoxFit.cover,
+                ),
               )
             else
-              Container(color: const Color(0xFF1A1A1A)),
+              Hero(
+                tag: 'movie_poster_${detail.id}',
+                child: Container(color: const Color(0xFF1A1A1A)),
+              ),
             // Gradient overlay for readability.
             const DecoratedBox(
               decoration: BoxDecoration(

@@ -1,5 +1,8 @@
 // SRP: This widget is solely responsible for rendering a single movie card.
 // It accepts a [MovieEntity] (domain type) — never a raw Map.
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge_pinapp/src/core/utils/constants.dart';
@@ -32,7 +35,44 @@ class MovieCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _PosterImage(posterPath: movie.posterPath)),
+            Expanded(
+              child: Hero(
+                tag: 'movie_poster_${movie.id}',
+                flightShuttleBuilder:
+                    (
+                      flightContext,
+                      animation,
+                      flightDirection,
+                      fromHeroContext,
+                      toHeroContext,
+                    ) {
+                      Widget current;
+                      if (flightDirection == HeroFlightDirection.push) {
+                        current = toHeroContext.widget;
+                      } else {
+                        current = fromHeroContext.widget;
+                      }
+                      return AnimatedBuilder(
+                        animation: animation,
+                        builder: (context, _) {
+                          final newValue = lerpDouble(
+                            0.0,
+                            2 * pi,
+                            animation.value,
+                          );
+                          return Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.identity()
+                              ..setEntry(3, 2, 0.001)
+                              ..rotateY(newValue ?? 0),
+                            child: current,
+                          );
+                        },
+                      );
+                    },
+                child: _PosterImage(posterPath: movie.posterPath),
+              ),
+            ),
             _MovieInfo(movie: movie),
           ],
         ),
