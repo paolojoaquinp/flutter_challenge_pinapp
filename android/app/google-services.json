@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "784460276571",
+    "project_id": "flutter-challenge-pinapp",
+    "storage_bucket": "flutter-challenge-pinapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784460276571:android:11ae95033c1be15e82b07e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_challenge_pinapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4BdLqh-KTlPQx51B3YKAk549eq6h8Ezg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
