@@ -2,6 +2,7 @@
 // Each tab's content is its own widget — this file has one reason to change.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_challenge_pinapp/src/core/remote_config/remote_config_service.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/providers/popular_movies_notifier.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/providers/trending_movies_notifier.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/error_state_widget.dart';
@@ -44,24 +45,47 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    // Read Remote Config flags once per build — zero network cost after Splash.
+    final remoteConfig = ref.read(remoteConfigServiceProvider);
+    final isSearchEnabled = remoteConfig.isSearchEnabled;
+    final bannerText = remoteConfig.welcomeBannerText;
+
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D0D0D),
         elevation: 0,
-        title: const Text(
-          'PinApp Movies',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
-            fontSize: 20,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'PinApp Movies',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+              ),
+            ),
+            // welcome_banner_text flag — empty string hides the subtitle.
+            if (bannerText.isNotEmpty)
+              Text(
+                bannerText,
+                style: const TextStyle(
+                  color: Color(0xFF888888),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+          ],
         ),
+        // is_search_enabled flag — hides the search icon when false.
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search_rounded, color: Colors.white),
-            onPressed: () => Navigator.of(context).pushNamed(SearchPage.routeName),
-          ),
+          if (isSearchEnabled)
+            IconButton(
+              icon: const Icon(Icons.search_rounded, color: Colors.white),
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(SearchPage.routeName),
+            ),
         ],
         bottom: TabBar(
           controller: _tabController,

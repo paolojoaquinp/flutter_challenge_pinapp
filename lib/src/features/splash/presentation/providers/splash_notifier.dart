@@ -1,7 +1,8 @@
 // HU-01: Splash Screen — Riverpod provider that coordinates app initialisation.
 // SRP: This notifier is solely responsible for the init sequence;
 //      navigation is triggered by the UI reacting to the AsyncValue state.
-// DIP: Depends on [RemoteConfigService] abstraction, not on Firebase SDK directly.
+// DIP: Depends on [RemoteConfigService] abstraction via provider injection,
+//      not on Firebase SDK directly.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_challenge_pinapp/src/core/remote_config/remote_config_service.dart';
 
@@ -18,7 +19,8 @@ class SplashNotifier extends AsyncNotifier<void> {
   // Runs Remote Config fetch and a minimum splash delay concurrently.
   // The UI will transition once *both* complete.
   Future<void> _initialise() async {
-    final remoteConfig = RemoteConfigService.defaultInstance();
+    // DIP: Read via provider — allows test overrides with ProviderContainer.
+    final remoteConfig = ref.read(remoteConfigServiceProvider);
     await Future.wait([
       remoteConfig.fetchAndActivate(),
       Future<void>.delayed(const Duration(seconds: 2)),
