@@ -128,7 +128,7 @@ Atributos de calidad priorizados para este proyecto y las tácticas técnicas co
 ## 🧪 Code Coverage Report
 
 ```bash
-flutter test              # corre los 58 unit tests
+flutter test              # corre los unit tests
 ./tool/coverage.sh        # tests + reporte lcov + gate ≥ 80 %
 ```
 
