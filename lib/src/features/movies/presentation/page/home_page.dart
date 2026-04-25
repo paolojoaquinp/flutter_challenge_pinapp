@@ -42,7 +42,7 @@ class _HomePageState extends ConsumerState<HomePage>
         transitionDuration: const Duration(milliseconds: 1200),
         reverseTransitionDuration: const Duration(milliseconds: 1200),
         pageBuilder: (context, animation, secondaryAnimation) {
-          return MovieDetailPage(movieId: movie.id);
+          return MovieDetailPage(movieId: movie.id, posterPath: movie.posterPath);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);

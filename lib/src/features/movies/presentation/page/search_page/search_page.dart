@@ -64,7 +64,7 @@ class SearchPage extends ConsumerWidget {
             movies: movies,
             onMovieTap: (movie) => Navigator.of(
               context,
-            ).pushNamed(MovieDetailPage.routeName, arguments: movie.id),
+            ).pushNamed(MovieDetailPage.routeName, arguments: movie),
           );
         },
         loading: () => const Center(

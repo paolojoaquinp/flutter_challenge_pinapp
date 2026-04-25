@@ -13,6 +13,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/home_page.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail/movie_detail_page.dart';
 import 'package:flutter_challenge_pinapp/src/features/shared/data/models/movie_model.dart';
+import 'package:flutter_challenge_pinapp/src/features/shared/domain/entities/movie_entity.dart';
 import 'package:flutter_challenge_pinapp/src/features/splash/presentation/page/splash_page.dart';
 
 Future<void> main() async {
@@ -58,9 +59,8 @@ class MyApp extends StatelessWidget {
         HomePage.routeName: (_) => const HomePage(),
         SearchPage.routeName: (_) => const SearchPage(),
         MovieDetailPage.routeName: (context) {
-          // Route arguments: movie id passed as int.
-          final id = ModalRoute.of(context)!.settings.arguments as int;
-          return MovieDetailPage(movieId: id);
+          final movie = ModalRoute.of(context)!.settings.arguments as MovieEntity;
+          return MovieDetailPage(movieId: movie.id, posterPath: movie.posterPath);
         },
       },
     );
