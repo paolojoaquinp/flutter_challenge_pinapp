@@ -31,9 +31,8 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // await Firebase.initializeApp();
   } catch (e) {
-    // Firebase init failures must not crash the app — Remote Config will
-    // surface defaults or timeout gracefully.
     debugPrint('[main] Firebase init failed: $e');
   }
 
