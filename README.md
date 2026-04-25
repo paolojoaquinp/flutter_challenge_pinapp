@@ -1,6 +1,6 @@
 # 🎬 PinApp The Movie DB
 
-Aplicación Flutter que consume la API de **TMDB** y muestra películas populares, mejor puntuadas y próximas a estrenarse. Implementada con **Clean Architecture**, **Riverpod** y estrategia **Offline-First** con Hive.
+Aplicación Flutter que consume la API de **TMDB** y muestra películas populares, mejor puntuadas y próximas a estrenarse. Implementada con **Clean Architecture(Feature First)**, **Riverpod** y estrategia **Offline-First** con Hive.
 
 ---
 
@@ -47,7 +47,7 @@ Organización de carpetas siguiendo Clean Architecture en tres capas (`domain`, 
 
 ![imgae structure](./screenshots/mermaid-table.png)
 
-### Tabla de capas
+### Tabla de capas(Feature First)
 
 | Capa | Responsabilidad | Depende de |
 |------|-----------------|-----------|
@@ -63,6 +63,18 @@ Organización de carpetas siguiendo Clean Architecture en tres capas (`domain`, 
 Vista de contenedores que muestra cómo se comunican la app Flutter, la API de TMDB, Firebase Remote Config y el almacenamiento local Hive. Permite identificar de un vistazo las fronteras del sistema y los protocolos de integración entre cada bloque.
 
 ![imgae structure](./screenshots/c4-diagram.png)
+---
+
+## 🚩 Firebase Remote Config — Feature Flags
+
+Flags gestionados en Firebase Remote Config y servidos por `RemoteConfigService`. Los valores por defecto garantizan que la app funcione sin red desde el primer arranque.
+
+| Flag | Tipo | Default | Efecto |
+|------|------|---------|--------|
+| `is_search_enabled` | `bool` | `true` | Muestra u oculta la pestaña de búsqueda en `HomeScreen` |
+| `welcome_banner_text` | `String` | `"Discover your next favourite"` | Texto del banner en el app bar principal |
+| `min_app_version` | `String` | `"1.0.0"` | Versión mínima requerida; se compara en runtime para bloquear versiones obsoletas |
+
 ---
 
 ## 📝 ADRs (Decisiones Arquitectónicas)
