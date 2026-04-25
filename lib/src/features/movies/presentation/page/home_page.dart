@@ -37,10 +37,9 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   void _navigateToDetail(MovieEntity movie) {
-    Navigator.of(context).pushNamed(
-      MovieDetailPage.routeName,
-      arguments: movie.id,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed(MovieDetailPage.routeName, arguments: movie.id);
   }
 
   @override
@@ -52,58 +51,71 @@ class _HomePageState extends ConsumerState<HomePage>
 
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D0D),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0D0D0D),
-        elevation: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'PinApp Movies',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w800,
-                fontSize: 20,
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              backgroundColor: const Color(0xFF0D0D0D),
+              elevation: 0,
+              pinned: false,
+              floating: true,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'PinApp Movies',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20,
+                    ),
+                  ),
+                  // welcome_banner_text flag — empty string hides the subtitle.
+                  if (bannerText.isNotEmpty)
+                    Text(
+                      bannerText,
+                      style: const TextStyle(
+                        color: Color(0xFF888888),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                ],
               ),
+              // is_search_enabled flag — hides the search icon when false.
+              actions: [
+                if (isSearchEnabled)
+                  IconButton(
+                    icon: const Icon(Icons.search_rounded, color: Colors.white),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(SearchPage.routeName),
+                  ),
+              ],
             ),
-            // welcome_banner_text flag — empty string hides the subtitle.
-            if (bannerText.isNotEmpty)
-              Text(
-                bannerText,
-                style: const TextStyle(
-                  color: Color(0xFF888888),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _SliverTabBarDelegate(
+                TabBar(
+                  controller: _tabController,
+                  indicatorColor: const Color(0xFFE50914),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: const Color(0xFF888888),
+                  tabs: const [
+                    Tab(text: 'Popular'),
+                    Tab(text: 'Trending'),
+                  ],
                 ),
               ),
-          ],
-        ),
-        // is_search_enabled flag — hides the search icon when false.
-        actions: [
-          if (isSearchEnabled)
-            IconButton(
-              icon: const Icon(Icons.search_rounded, color: Colors.white),
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(SearchPage.routeName),
             ),
-        ],
-        bottom: TabBar(
+          ];
+        },
+        body: TabBarView(
           controller: _tabController,
-          indicatorColor: const Color(0xFFE50914),
-          labelColor: Colors.white,
-          unselectedLabelColor: const Color(0xFF888888),
-          tabs: const [
-            Tab(text: 'Popular'),
-            Tab(text: 'Trending'),
+          children: [
+            _PopularTab(onMovieTap: _navigateToDetail),
+            _TrendingTab(onMovieTap: _navigateToDetail),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _PopularTab(onMovieTap: _navigateToDetail),
-          _TrendingTab(onMovieTap: _navigateToDetail),
-        ],
       ),
     );
   }
@@ -122,7 +134,8 @@ class _PopularTab extends ConsumerWidget {
       data: (movies) => MovieGridWidget(
         movies: movies,
         onMovieTap: onMovieTap,
-        onLoadMore: () => ref.read(popularMoviesProvider.notifier).loadNextPage(),
+        onLoadMore: () =>
+            ref.read(popularMoviesProvider.notifier).loadNextPage(),
       ),
       loading: () => const Center(
         child: CircularProgressIndicator(color: Color(0xFFE50914)),
@@ -143,10 +156,7 @@ class _TrendingTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(trendingMoviesProvider);
     return state.when(
-      data: (movies) => MovieGridWidget(
-        movies: movies,
-        onMovieTap: onMovieTap,
-      ),
+      data: (movies) => MovieGridWidget(movies: movies, onMovieTap: onMovieTap),
       loading: () => const Center(
         child: CircularProgressIndicator(color: Color(0xFFE50914)),
       ),
@@ -155,5 +165,31 @@ class _TrendingTab extends ConsumerWidget {
         onRetry: () => ref.read(trendingMoviesProvider.notifier).refresh(),
       ),
     );
+  }
+}
+
+class _SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverTabBarDelegate(this.tabBar);
+
+  final TabBar tabBar;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(color: const Color(0xFF0D0D0D), child: tabBar);
+  }
+
+  @override
+  bool shouldRebuild(_SliverTabBarDelegate oldDelegate) {
+    return tabBar != oldDelegate.tabBar;
   }
 }
