@@ -38,38 +38,32 @@ class MovieCardWidget extends StatelessWidget {
             Expanded(
               child: Hero(
                 tag: 'movie_poster_${movie.id}',
-                flightShuttleBuilder:
-                    (
-                      flightContext,
+                 flightShuttleBuilder: (flightContext,
                       animation,
                       flightDirection,
                       fromHeroContext,
-                      toHeroContext,
-                    ) {
-                      Widget current;
-                      if (flightDirection == HeroFlightDirection.push) {
-                        current = toHeroContext.widget;
-                      } else {
-                        current = fromHeroContext.widget;
-                      }
-                      return AnimatedBuilder(
-                        animation: animation,
-                        builder: (context, _) {
-                          final newValue = lerpDouble(
-                            0.0,
-                            2 * pi,
-                            animation.value,
-                          );
-                          return Transform(
-                            alignment: Alignment.center,
-                            transform: Matrix4.identity()
-                              ..setEntry(3, 2, 0.001)
-                              ..rotateY(newValue ?? 0),
-                            child: current,
-                          );
-                        },
-                      );
-                    },
+                      toHeroContext) {
+                    Widget current;
+                    if (flightDirection == HeroFlightDirection.push) {
+                      current = toHeroContext.widget;
+                    } else {
+                      current = fromHeroContext.widget;
+                    }
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, _) {
+                        final newValue =
+                            lerpDouble(0.0, 2 * pi, animation.value);
+                        return Transform(
+                          alignment: Alignment.center,
+                          transform: Matrix4.identity()
+                            ..setEntry(3, 2, 0.001)
+                            ..rotateY(newValue ?? 0),
+                          child: current,
+                        );
+                      },
+                    );
+                  },
                 child: _PosterImage(posterPath: movie.posterPath),
               ),
             ),

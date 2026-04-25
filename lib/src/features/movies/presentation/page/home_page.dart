@@ -36,9 +36,19 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 
   void _navigateToDetail(MovieEntity movie) {
-    Navigator.of(
+    Navigator.push(
       context,
-    ).pushNamed(MovieDetailPage.routeName, arguments: movie.id);
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 1200),
+        reverseTransitionDuration: const Duration(milliseconds: 1200),
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return MovieDetailPage(movieId: movie.id);
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
   }
 
   @override
