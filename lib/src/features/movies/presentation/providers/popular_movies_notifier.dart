@@ -13,10 +13,7 @@ class PopularMoviesNotifier extends AsyncNotifier<List<MovieEntity>> {
   Future<List<MovieEntity>> _fetchPage({required int page}) async {
     final repoAsync = await ref.read(movieRepositoryProvider.future);
     final result = await repoAsync.getPopularMovies(page: page);
-    return result.when(
-      ok: (movies) => movies,
-      err: (e) => throw e,
-    );
+    return result.when(ok: (movies) => movies, err: (e) => throw e);
   }
 
   Future<void> refresh() async {
@@ -36,5 +33,5 @@ class PopularMoviesNotifier extends AsyncNotifier<List<MovieEntity>> {
 
 final popularMoviesProvider =
     AsyncNotifierProvider<PopularMoviesNotifier, List<MovieEntity>>(
-  PopularMoviesNotifier.new,
-);
+      PopularMoviesNotifier.new,
+    );

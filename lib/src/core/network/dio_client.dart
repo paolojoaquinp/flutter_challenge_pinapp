@@ -31,11 +31,13 @@ class DioClient {
 
     // Only attach logging in debug builds — never log tokens in production.
     if (kDebugMode) {
-      dio.interceptors.add(LogInterceptor(
-        requestBody: false,
-        responseBody: false,
-        requestHeader: false,
-      ));
+      dio.interceptors.add(
+        LogInterceptor(
+          requestBody: false,
+          responseBody: false,
+          requestHeader: false,
+        ),
+      );
     }
 
     return dio;

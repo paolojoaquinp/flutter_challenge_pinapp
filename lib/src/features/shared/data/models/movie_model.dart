@@ -44,17 +44,17 @@ class MovieModel extends MovieEntity {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'overview': overview,
-        'poster_path': posterPath,
-        'backdrop_path': backdropPath,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-        'release_date': releaseDate,
-        'genre_ids': genreIds,
-        'popularity': popularity,
-      };
+    'id': id,
+    'title': title,
+    'overview': overview,
+    'poster_path': posterPath,
+    'backdrop_path': backdropPath,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'release_date': releaseDate,
+    'genre_ids': genreIds,
+    'popularity': popularity,
+  };
 
   MovieModel copyWith({
     int? id,

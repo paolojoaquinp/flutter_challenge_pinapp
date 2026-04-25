@@ -3,7 +3,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// TMDB API v3 base URL.
-String get kTmdbBaseUrl => dotenv.env['TMDB_BASE_URL'] ?? 'https://api.themoviedb.org/3';
+String get kTmdbBaseUrl =>
+    dotenv.env['TMDB_BASE_URL'] ?? 'https://api.themoviedb.org/3';
 
 /// TMDB image CDN base URL (w500 quality).
 String get kTmdbImageBaseUrl =>

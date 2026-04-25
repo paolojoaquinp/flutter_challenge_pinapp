@@ -34,12 +34,15 @@ class RemoteConfigService {
       await _remoteConfig.setDefaults(_kRemoteConfigDefaults);
 
       // 2. Configure fetch behaviour.
-      await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-        // In debug mode prefer shorter cache so developers see changes quickly.
-        fetchTimeout: const Duration(seconds: 10),
-        minimumFetchInterval:
-            kDebugMode ? Duration.zero : const Duration(hours: 1),
-      ));
+      await _remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+          // In debug mode prefer shorter cache so developers see changes quickly.
+          fetchTimeout: const Duration(seconds: 10),
+          minimumFetchInterval: kDebugMode
+              ? Duration.zero
+              : const Duration(hours: 1),
+        ),
+      );
 
       // 3. Fetch + activate in one call. Returns true if new values were activated.
       final updated = await _remoteConfig.fetchAndActivate();

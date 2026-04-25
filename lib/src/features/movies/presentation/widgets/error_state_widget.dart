@@ -6,11 +6,7 @@ class ErrorStateWidget extends StatelessWidget {
   final String message;
   final VoidCallback? onRetry;
 
-  const ErrorStateWidget({
-    super.key,
-    required this.message,
-    this.onRetry,
-  });
+  const ErrorStateWidget({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +16,16 @@ class ErrorStateWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.wifi_off_rounded, size: 64, color: Color(0xFF555555)),
+            const Icon(
+              Icons.wifi_off_rounded,
+              size: 64,
+              color: Color(0xFF555555),
+            ),
             const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF888888),
-                fontSize: 15,
-              ),
+              style: const TextStyle(color: Color(0xFF888888), fontSize: 15),
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 24),

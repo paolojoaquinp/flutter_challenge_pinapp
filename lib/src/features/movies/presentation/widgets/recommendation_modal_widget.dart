@@ -9,10 +9,7 @@ import 'package:flutter/material.dart';
 class RecommendationModalWidget extends StatefulWidget {
   final String movieTitle;
 
-  const RecommendationModalWidget({
-    super.key,
-    required this.movieTitle,
-  });
+  const RecommendationModalWidget({super.key, required this.movieTitle});
 
   /// Shows the recommendation modal as a bottom sheet.
   /// [context] must have a [Scaffold] ancestor for the success SnackBar.
@@ -55,7 +52,9 @@ class _RecommendationModalWidgetState extends State<RecommendationModalWidget> {
     // AC4: SnackBar confirms the recommendation was sent.
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Recommendation for "${widget.movieTitle}" sent to $recipient!'),
+        content: Text(
+          'Recommendation for "${widget.movieTitle}" sent to $recipient!',
+        ),
         backgroundColor: const Color(0xFF1DB954),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -207,11 +206,17 @@ class _ModalTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Color(0xFFE50914), width: 1.5),
+              borderSide: const BorderSide(
+                color: Color(0xFFE50914),
+                width: 1.5,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.orangeAccent, width: 1.5),
+              borderSide: const BorderSide(
+                color: Colors.orangeAccent,
+                width: 1.5,
+              ),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 14,

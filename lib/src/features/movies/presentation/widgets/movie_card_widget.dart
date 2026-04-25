@@ -10,11 +10,7 @@ class MovieCardWidget extends StatelessWidget {
   final MovieEntity movie;
   final VoidCallback? onTap;
 
-  const MovieCardWidget({
-    super.key,
-    required this.movie,
-    this.onTap,
-  });
+  const MovieCardWidget({super.key, required this.movie, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +32,7 @@ class MovieCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: _PosterImage(posterPath: movie.posterPath),
-            ),
+            Expanded(child: _PosterImage(posterPath: movie.posterPath)),
             _MovieInfo(movie: movie),
           ],
         ),
@@ -78,7 +72,11 @@ class _PosterImage extends StatelessWidget {
       errorWidget: (_, __, ___) => Container(
         color: const Color(0xFF2A2A2A),
         child: const Center(
-          child: Icon(Icons.broken_image_outlined, color: Color(0xFF555555), size: 40),
+          child: Icon(
+            Icons.broken_image_outlined,
+            color: Color(0xFF555555),
+            size: 40,
+          ),
         ),
       ),
     );
@@ -109,7 +107,11 @@ class _MovieInfo extends StatelessWidget {
           const SizedBox(height: 4),
           Row(
             children: [
-              const Icon(Icons.star_rounded, size: 14, color: Color(0xFFFFC107)),
+              const Icon(
+                Icons.star_rounded,
+                size: 14,
+                color: Color(0xFFFFC107),
+              ),
               const SizedBox(width: 4),
               Text(
                 movie.voteAverage.toStringAsFixed(1),

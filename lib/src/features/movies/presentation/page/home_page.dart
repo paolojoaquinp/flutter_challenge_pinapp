@@ -1,15 +1,14 @@
 // SRP: This page is solely responsible for composing the tabs and routing.
 // Each tab's content is its own widget — this file has one reason to change.
 import 'package:flutter/material.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/search_page/search_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_challenge_pinapp/src/core/remote_config/remote_config_service.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/providers/popular_movies_notifier.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/providers/trending_movies_notifier.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/error_state_widget.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/movie_grid_widget.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail_page.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/search_page.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail/movie_detail_page.dart';
 import 'package:flutter_challenge_pinapp/src/features/shared/domain/entities/movie_entity.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/popular_tab_widget.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/trending_tab_widget.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/sliver_tab_bar_delegate.dart';
 
 // TODO: review cawu example
 class HomePage extends ConsumerStatefulWidget {
@@ -94,7 +93,7 @@ class _HomePageState extends ConsumerState<HomePage>
             ),
             SliverPersistentHeader(
               pinned: true,
-              delegate: _SliverTabBarDelegate(
+              delegate: SliverTabBarDelegate(
                 TabBar(
                   controller: _tabController,
                   indicatorColor: const Color(0xFFE50914),
@@ -112,84 +111,11 @@ class _HomePageState extends ConsumerState<HomePage>
         body: TabBarView(
           controller: _tabController,
           children: [
-            _PopularTab(onMovieTap: _navigateToDetail),
-            _TrendingTab(onMovieTap: _navigateToDetail),
+            PopularTabWidget(onMovieTap: _navigateToDetail),
+            TrendingTabWidget(onMovieTap: _navigateToDetail),
           ],
         ),
       ),
     );
-  }
-}
-
-// ── Tab widgets ───────────────────────────────────────────────────────────────
-
-class _PopularTab extends ConsumerWidget {
-  final void Function(MovieEntity) onMovieTap;
-  const _PopularTab({required this.onMovieTap});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(popularMoviesProvider);
-    return state.when(
-      data: (movies) => MovieGridWidget(
-        movies: movies,
-        onMovieTap: onMovieTap,
-        onLoadMore: () =>
-            ref.read(popularMoviesProvider.notifier).loadNextPage(),
-      ),
-      loading: () => const Center(
-        child: CircularProgressIndicator(color: Color(0xFFE50914)),
-      ),
-      error: (e, _) => ErrorStateWidget(
-        message: e.toString(),
-        onRetry: () => ref.read(popularMoviesProvider.notifier).refresh(),
-      ),
-    );
-  }
-}
-
-class _TrendingTab extends ConsumerWidget {
-  final void Function(MovieEntity) onMovieTap;
-  const _TrendingTab({required this.onMovieTap});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(trendingMoviesProvider);
-    return state.when(
-      data: (movies) => MovieGridWidget(movies: movies, onMovieTap: onMovieTap),
-      loading: () => const Center(
-        child: CircularProgressIndicator(color: Color(0xFFE50914)),
-      ),
-      error: (e, _) => ErrorStateWidget(
-        message: e.toString(),
-        onRetry: () => ref.read(trendingMoviesProvider.notifier).refresh(),
-      ),
-    );
-  }
-}
-
-class _SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverTabBarDelegate(this.tabBar);
-
-  final TabBar tabBar;
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(color: const Color(0xFF0D0D0D), child: tabBar);
-  }
-
-  @override
-  bool shouldRebuild(_SliverTabBarDelegate oldDelegate) {
-    return tabBar != oldDelegate.tabBar;
   }
 }

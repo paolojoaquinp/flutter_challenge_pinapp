@@ -25,9 +25,9 @@ class MovieRepositoryImpl implements MovieRepository {
     required NetworkInfo networkInfo,
     required MovieLocalDatasource localDatasource,
     Dio? dio,
-  })  : _networkInfo = networkInfo,
-        _localDatasource = localDatasource,
-        _dio = dio ?? DioClient.instance;
+  }) : _networkInfo = networkInfo,
+       _localDatasource = localDatasource,
+       _dio = dio ?? DioClient.instance;
 
   // ── Popular Movies ─────────────────────────────────────────────────────────
 
@@ -42,7 +42,8 @@ class MovieRepositoryImpl implements MovieRepository {
     }
 
     return _fetchAndCache(
-      remoteFetch: () => _dio.get('/movie/popular', queryParameters: {'page': page}),
+      remoteFetch: () =>
+          _dio.get('/movie/popular', queryParameters: {'page': page}),
       fromJson: (json) => TmdbPaginatedResponseModel.fromJson(json).results,
       cacheWriter: (movies) => _localDatasource.cachePopularMovies(movies),
       fallbackCache: () => _localDatasource.getCachedPopularMovies(),
@@ -98,9 +99,9 @@ class MovieRepositoryImpl implements MovieRepository {
         '/search/movie',
         queryParameters: {'query': query, 'page': page},
       );
-      final results =
-          TmdbPaginatedResponseModel.fromJson(response.data as Map<String, dynamic>)
-              .results;
+      final results = TmdbPaginatedResponseModel.fromJson(
+        response.data as Map<String, dynamic>,
+      ).results;
       return Ok(results);
     } on DioException catch (e) {
       return Err(Exception(e.message));

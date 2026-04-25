@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_challenge_pinapp/src/features/splash/presentation/providers/splash_notifier.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/home_page.dart';
 
-
 // TODO: review migrate to kiss focus stateless widget
 class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});
@@ -18,7 +17,8 @@ class SplashPage extends ConsumerWidget {
     // Listen for state transitions — navigate once init is complete.
     ref.listen<AsyncValue<void>>(splashProvider, (_, next) {
       next.whenOrNull(
-        data: (_) => Navigator.of(context).pushReplacementNamed(HomePage.routeName),
+        data: (_) =>
+            Navigator.of(context).pushReplacementNamed(HomePage.routeName),
         error: (_, __) {
           // Error state is rendered inline — let the user retry.
           ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +72,11 @@ class _SplashContent extends StatelessWidget {
               ),
             ],
           ),
-          child: const Icon(Icons.movie_filter_rounded, size: 64, color: Colors.white),
+          child: const Icon(
+            Icons.movie_filter_rounded,
+            size: 64,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 32),
         const Text(

@@ -24,10 +24,12 @@ class MovieDetailModel extends MovieDetailEntity {
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
     final genreList = (json['genres'] as List<dynamic>? ?? [])
-        .map((g) => GenreEntity(
-              id: g['id'] as int,
-              name: (g['name'] as String?) ?? '',
-            ))
+        .map(
+          (g) => GenreEntity(
+            id: g['id'] as int,
+            name: (g['name'] as String?) ?? '',
+          ),
+        )
         .toList();
 
     return MovieDetailModel(

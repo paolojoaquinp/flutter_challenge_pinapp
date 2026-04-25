@@ -4,16 +4,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_challenge_pinapp/firebase_options.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/search_page/search_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/home_page.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail_page.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/search_page.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail/movie_detail_page.dart';
 import 'package:flutter_challenge_pinapp/src/features/shared/data/models/movie_model.dart';
 import 'package:flutter_challenge_pinapp/src/features/splash/presentation/page/splash_page.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,9 +37,7 @@ Future<void> main() async {
 
   runApp(
     // ProviderScope is required by all Riverpod providers.
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const ProviderScope(child: MyApp()),
   );
 }
 

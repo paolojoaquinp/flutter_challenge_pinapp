@@ -17,11 +17,16 @@ abstract class MovieRepository {
 
   /// Fetches the currently trending movies (week window).
   /// Falls back to cached data when offline.
-  Future<Result<List<MovieEntity>, Exception>> getTrendingMovies({int page = 1});
+  Future<Result<List<MovieEntity>, Exception>> getTrendingMovies({
+    int page = 1,
+  });
 
   /// Fetches the full detail for a single movie by [id].
   Future<Result<MovieDetailEntity, Exception>> getMovieDetail(int id);
 
   /// Searches movies by [query] string.
-  Future<Result<List<MovieEntity>, Exception>> searchMovies(String query, {int page = 1});
+  Future<Result<List<MovieEntity>, Exception>> searchMovies(
+    String query, {
+    int page = 1,
+  });
 }

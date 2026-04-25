@@ -1,8 +1,8 @@
 // SRP: This page is solely responsible for the search UX —
 // accepting user input and displaying results.
 import 'package:flutter/material.dart';
+import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail/movie_detail_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_challenge_pinapp/src/features/movies/presentation/page/movie_detail_page.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/providers/movie_search_notifier.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/error_state_widget.dart';
 import 'package:flutter_challenge_pinapp/src/features/movies/presentation/widgets/movie_grid_widget.dart';
@@ -27,10 +27,15 @@ class SearchPage extends ConsumerWidget {
             hintText: 'Search movies…',
             hintStyle: const TextStyle(color: Color(0xFF555555)),
             border: InputBorder.none,
-            suffixIcon: searchState.hasValue && (searchState.value?.isNotEmpty ?? false)
+            suffixIcon:
+                searchState.hasValue && (searchState.value?.isNotEmpty ?? false)
                 ? IconButton(
-                    icon: const Icon(Icons.clear_rounded, color: Color(0xFF888888)),
-                    onPressed: () => ref.read(movieSearchProvider.notifier).clearSearch(),
+                    icon: const Icon(
+                      Icons.clear_rounded,
+                      color: Color(0xFF888888),
+                    ),
+                    onPressed: () =>
+                        ref.read(movieSearchProvider.notifier).clearSearch(),
                   )
                 : null,
           ),
@@ -38,7 +43,10 @@ class SearchPage extends ConsumerWidget {
               ref.read(movieSearchProvider.notifier).search(query),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -54,8 +62,9 @@ class SearchPage extends ConsumerWidget {
           }
           return MovieGridWidget(
             movies: movies,
-            onMovieTap: (movie) => Navigator.of(context)
-                .pushNamed(MovieDetailPage.routeName, arguments: movie.id),
+            onMovieTap: (movie) => Navigator.of(
+              context,
+            ).pushNamed(MovieDetailPage.routeName, arguments: movie.id),
           );
         },
         loading: () => const Center(

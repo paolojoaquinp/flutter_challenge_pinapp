@@ -4,6 +4,7 @@
 import 'package:hive/hive.dart';
 import 'package:flutter_challenge_pinapp/src/core/utils/constants.dart';
 import 'package:flutter_challenge_pinapp/src/features/shared/data/models/movie_model.dart';
+
 // TODO: split in 2 files
 /// Local persistence interface for movie collections.
 // DIP: Higher layers depend on this abstraction, not on the Hive box directly.
@@ -29,15 +30,18 @@ class MovieLocalDatasourceImpl implements MovieLocalDatasource {
   const MovieLocalDatasourceImpl({
     required Box<MovieModel> popularBox,
     required Box<MovieModel> trendingBox,
-  })  : _popularBox = popularBox,
-        _trendingBox = trendingBox;
+  }) : _popularBox = popularBox,
+       _trendingBox = trendingBox;
 
   // ── Factory — opens the Hive boxes that are required by this datasource. ──
   // ADR-004: Hive is exclusively the store for heavy collections.
   static Future<MovieLocalDatasourceImpl> openBoxes() async {
-    final popularBox = await Hive.openBox<MovieModel>(HiveBoxNames.popularMovies);
-    final trendingBox =
-        await Hive.openBox<MovieModel>(HiveBoxNames.trendingMovies);
+    final popularBox = await Hive.openBox<MovieModel>(
+      HiveBoxNames.popularMovies,
+    );
+    final trendingBox = await Hive.openBox<MovieModel>(
+      HiveBoxNames.trendingMovies,
+    );
     return MovieLocalDatasourceImpl(
       popularBox: popularBox,
       trendingBox: trendingBox,
