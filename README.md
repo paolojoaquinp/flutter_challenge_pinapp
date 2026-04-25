@@ -6,7 +6,7 @@ Aplicación Flutter que consume la API de **TMDB** y muestra películas populare
 
 ## 🎥 Demo
 
-![Demo de la aplicación](screenshots/video-pinapp-challenge.mov)
+![Demo de la aplicación](screenshots/video-pinapp-challenge.gif)
 
 ---
 
@@ -43,33 +43,7 @@ flutter run
 
 ## 📂 Estructura del Proyecto
 
-```mermaid
-graph TD
-    A[lib/] --> B[core/]
-    A --> C[features/movies/]
-    A --> D[main.dart]
-
-    B --> B1[network/]
-    B --> B2[local_storage/]
-    B --> B3[remote_config/]
-    B --> B4[utils/]
-
-    C --> E[presentation/]
-    C --> F[domain/]
-    C --> G[data/]
-
-    E --> E1[screens/]
-    E --> E2[widgets/]
-    E --> E3[providers/]
-
-    F --> F1[entities/]
-    F --> F2[repositories/]
-    F --> F3[usecases/]
-
-    G --> G1[models/DTOs]
-    G --> G2[datasources/]
-    G --> G3[repositories_impl/]
-```
+![imgae structure](./screenshots/mermaid-table.png)
 
 ### Tabla de capas
 
@@ -84,32 +58,7 @@ graph TD
 
 ## 🗺️ Diagrama C4 — Nivel 2 (Contenedores)
 
-```mermaid
-C4Container
-    title Diagrama de Contenedores - PinApp The Movie DB
-
-    Person(user, "Usuario", "Ve películas populares, detalles y recomendaciones")
-
-    System_Boundary(app, "PinApp Mobile") {
-        Container(ui, "Presentation Layer", "Flutter + Riverpod", "Pantallas, widgets y notifiers (AsyncValue)")
-        Container(domain, "Domain Layer", "Dart puro", "Entities, UseCases e interfaces de repositorio")
-        Container(data, "Data Layer", "Repositories Impl", "Orquesta remote/local y mapea DTOs a entidades")
-        ContainerDb(hive, "Hive Cache", "NoSQL local", "Guarda listas de películas para modo offline")
-        Container(dio, "Dio Client", "HTTP Client", "Interceptors de auth y conectividad")
-    }
-
-    System_Ext(tmdb, "TMDB API", "The Movie Database REST API")
-    System_Ext(firebase, "Firebase Remote Config", "Flags y configuración remota")
-
-    Rel(user, ui, "Interactúa con")
-    Rel(ui, domain, "Invoca UseCases")
-    Rel(domain, data, "Usa interfaces (DI)")
-    Rel(data, dio, "Solicita datos remotos")
-    Rel(data, hive, "Lee/escribe caché")
-    Rel(dio, tmdb, "GET /movie/*", "HTTPS/JSON")
-    Rel(ui, firebase, "Lee flags", "HTTPS")
-```
-
+![imgae structure](./screenshots/c4-diagram.png)
 ---
 
 ## 📝 ADRs (Decisiones Arquitectónicas)
@@ -153,10 +102,11 @@ C4Container
 ## 🧪 Testing
 
 ```bash
-flutter test --coverage
+flutter test              # corre los 58 unit tests
+./tool/coverage.sh        # tests + reporte lcov + gate ≥ 80 %
 ```
 
-Objetivo de cobertura: **>80%**.
+Cobertura actual: **90 %** (entities, models, datasources, repository, notifiers).
 
 ---
 
@@ -166,6 +116,3 @@ Objetivo de cobertura: **>80%**.
 - **D** — UseCases dependen de interfaces, no de implementaciones.
 - **I** — DataSources independientes para remoto y local.
 
----
-
-> Ver documentación extendida en [docs/requirements.md](docs/requirements.md) y [docs/design.md](docs/design.md).

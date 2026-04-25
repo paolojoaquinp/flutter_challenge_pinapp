@@ -54,6 +54,9 @@ dependencies:
   # Result type — Ok / Err pattern
   oxidized: ^6.2.0
 
+  # Value equality for domain entities
+  equatable: ^2.0.7
+
   # Config & utilities
   flutter_dotenv: ^6.0.1
   cached_network_image: ^3.4.1
@@ -76,6 +79,9 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   riverpod_generator: ^2.6.1
   build_runner: ^2.4.13
+
+  # Testing
+  mocktail: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
