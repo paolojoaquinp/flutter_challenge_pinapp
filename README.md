@@ -43,6 +43,8 @@ flutter run
 
 ## 📂 Estructura del Proyecto
 
+Organización de carpetas siguiendo Clean Architecture en tres capas (`domain`, `data`, `presentation`) más un módulo `core` transversal. Cada capa solo depende de la inmediatamente inferior, garantizando bajo acoplamiento y alta cohesión.
+
 ![imgae structure](./screenshots/mermaid-table.png)
 
 ### Tabla de capas
@@ -58,15 +60,25 @@ flutter run
 
 ## 🗺️ Diagrama C4 — Nivel 2 (Contenedores)
 
+Vista de contenedores que muestra cómo se comunican la app Flutter, la API de TMDB, Firebase Remote Config y el almacenamiento local Hive. Permite identificar de un vistazo las fronteras del sistema y los protocolos de integración entre cada bloque.
+
 ![imgae structure](./screenshots/c4-diagram.png)
 ---
 
 ## 📝 ADRs (Decisiones Arquitectónicas)
 
 ### ADR-001 · State Management: Riverpod Generator
-- **Decisión:** Usar Riverpod con `@riverpod` en lugar de BLoC.
+- **Decisión:** Usar Riverpod con `@riverpod` en lugar de BLoC o GetX.
 - **Por qué:** DI segura en compilación, `autoDispose` por defecto evita fugas de memoria y reduce boilerplate.
 - **Trade-off:** Dependencia de `build_runner` para generar código.
+
+| Criterio | BLoC | **Riverpod** ✅ | GetX |
+|----------|------|----------------|------|
+| **Predecibilidad** | Máxima — eventos e estados inmutables | Alta — proveedores reactivos y tipados | Baja — estado imperativo/global |
+| **Explainability** | Excelente — trazas evento→estado claras | Buena — grafo de dependencias visible en `ProviderScope` | Pobre — difícil saber quién mutó qué |
+| **Boilerplate** | Alto — eventos, estados, bloc por feature | Medio — una anotación `@riverpod` genera el provider | Muy bajo, pero a costa de opacidad |
+| **Testing** | Nativo y robusto (`bloc_test`) | Excelente — `ProviderContainer` aísla providers sin mocks | Difícil por dependencias globales (`Get.find`) |
+| **DI en compilación** | No — registro manual | Sí — `@riverpod` genera código verificado en build time | No — `Get.put` resuelve en runtime |
 
 ### ADR-002 · Offline-First con Hive
 - **Decisión:** Repositorio que consulta red; si no hay conexión, lee de Hive.
@@ -89,6 +101,8 @@ flutter run
 ---
 
 ## 🏅 Criterios de Calidad (QA Attributes)
+
+Atributos de calidad priorizados para este proyecto y las tácticas técnicas concretas que los satisfacen. Cada fila traza la decisión hasta su ubicación exacta en la arquitectura, facilitando auditorías y revisiones de código.
 
 | Atributo | Táctica Técnica | Ubicación en la Arquitectura |
 |----------|----------------|------------------------------|
@@ -118,3 +132,5 @@ Cobertura actual: **90 %** (entities, models, datasources, repository, notifiers
 - **D** — UseCases dependen de interfaces, no de implementaciones.
 - **I** — DataSources independientes para remoto y local.
 
+
+Autor @paolojoaquinp
