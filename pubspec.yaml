@@ -61,6 +61,8 @@ dependencies:
   # Firebase
   firebase_core: ^4.7.0
   firebase_remote_config: ^6.4.0
+  connectivity_plus: ^6.1.5
+  google_fonts: ^8.0.2
 
 dev_dependencies:
   flutter_test:
