@@ -99,7 +99,7 @@ flutter run
 
 ---
 
-## 🧪 Testing
+## 🧪 Code Coverage Report
 
 ```bash
 flutter test              # corre los 58 unit tests
@@ -107,6 +107,8 @@ flutter test              # corre los 58 unit tests
 ```
 
 Cobertura actual: **90 %** (entities, models, datasources, repository, notifiers).
+
+![Imagen del reporte del coverage](screenshots/lcov-report.png)
 
 ---
 
