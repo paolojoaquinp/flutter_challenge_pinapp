@@ -52,7 +52,7 @@ Organización de carpetas siguiendo Clean Architecture en tres capas (`domain`, 
 | Capa | Responsabilidad | Depende de |
 |------|-----------------|-----------|
 | **Presentation** | UI, Widgets, Riverpod Notifiers | Domain |
-| **Domain** | Entidades, UseCases, Interfaces (Dart puro) | — |
+| **Domain** | Entidades, Interfaces de Repositorio (Dart puro) | — |
 | **Data** | DTOs, DataSources (Dio/Hive), Repo Impl | Domain |
 | **Core** | Red, errores, config global | — |
 
@@ -99,13 +99,13 @@ Flags gestionados en Firebase Remote Config y servidos por `RemoteConfigService`
 
 ### ADR-003 · Separación DTO ↔ Entity (Mappers)
 - **Decisión:** `MovieModel` (data) con `fromJson/toJson` + `toEntity()` hacia `Movie` (domain).
-- **Por qué:** Si TMDB renombra campos, solo cambia el DTO. UI y UseCases no se tocan (OCP).
+- **Por qué:** Si TMDB renombra campos, solo cambia el DTO. UI y Repositories no se tocan (OCP).
 
 ---
 
 ## 🧩 Implementación por capas (resumen)
 
-- **Domain** → `Movie` como entidad inmutable con Freezed; `MovieRepository` como contrato abstracto; UseCases simples (ej. `GetPopularMovies`).
+- **Domain** → `Movie` como entidad inmutable con Freezed; `MovieRepository` como contrato abstracto que define las operaciones disponibles.
 - **Data** → `MovieModel extends Movie` con `fromJson`; `MovieRemoteDataSource` (Dio) y `MovieLocalDataSource` (Hive); `MovieRepositoryImpl` resuelve la estrategia **Offline-First** de ADR-002 y mapea `DioException` → `Failure`.
 - **Presentation** → `MoviesAsyncNotifier` con `@riverpod` exponiendo `AsyncValue<List<Movie>>`; widgets consumen estados `loading / data / error`.
 - **Core** → `DioClient` con interceptores (auth token, logging), `ConnectivityChecker` y clases `Failure` (Network, Cache, Server).
@@ -137,12 +137,5 @@ Cobertura actual: **90 %** (entities, models, datasources, repository, notifiers
 ![Imagen del reporte del coverage](screenshots/lcov-report.png)
 
 ---
-
-## 🎯 Principios SOLID aplicados
-
-- **S** — Repositorios separados por entidad.
-- **D** — UseCases dependen de interfaces, no de implementaciones.
-- **I** — DataSources independientes para remoto y local.
-
 
 Autor @paolojoaquinp
